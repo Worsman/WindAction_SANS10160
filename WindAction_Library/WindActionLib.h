@@ -11,14 +11,16 @@
 
 namespace WindAction_library
 {
-
-  static const int BASICWINDSPEED[] = { 28,32,36 };
-  static const char TERRAINCATEGORY[] = { 'A','B', 'C', 'D'};
-
   class WindAction
   {
     public:
-            
+      static constexpr  int BASICWINDSPEED[3] = { 28,32,36 };
+
+      static constexpr  char TERRAINCATEGORY_A = 'A';
+      static constexpr  char TERRAINCATEGORY_B = 'B';
+      static constexpr  char TERRAINCATEGORY_C = 'C';
+      static constexpr  char TERRAINCATEGORY_D = 'D';
+      static constexpr  char TERRAINCATEGORIES[4] = { TERRAINCATEGORY_A, TERRAINCATEGORY_B, TERRAINCATEGORY_C, TERRAINCATEGORY_D };
 
     /**
     * Source : SANS 10160-3:2011; section 7.4; page 19
@@ -39,17 +41,12 @@ namespace WindAction_library
                                         const int _iHeight,
                                         const char _cTerrainCategory,
                                         const double _dTopogaphyactor);
+  private:
 
     /**
-    * Source : SANS 10160-3:2011; section 7.4; page 20
-    *
-    *   _iAltitude = meters above sea level (m)
-    *   AirDensity  =  kilograms per cubic meter (kg/m^3)
-    **/
-    static double AirDensity(const unsigned int _iAltitude);
-
-    /**
+    * Source : SANS 10160-3:2011; section 7.2; page 14
     *   Checks wheather vailid in range value is used for Basic Wind Speed
+    *   basic wind speed @ 10 meter >> figure 1 page 14
     **/
     static bool IsValidBasicWindSpeed(const int _iBasicWindSpeed);
 
@@ -59,6 +56,15 @@ namespace WindAction_library
     **/
     static bool IsValidTerrainCategory(const char _cTerrainCategory);
 
+    /**
+    * Source : SANS 10160-3:2011; section 7.4; page 20
+    *
+    *   _iAltitude = meters above sea level (m)
+    *   AirDensity  =  kilograms per cubic meter (kg/m^3)
+    **/
+    static double AirDensity(const unsigned int _iAltitude);
+
+    
     /**
     * Source : SANS 10160-3:2011; section 7.3; page 15
     *

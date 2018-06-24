@@ -41,7 +41,43 @@ namespace WindAction_library
     }//if - Valid Input    
 
     return dReturn;
-  }
+  }//PeakWindSpeedPressure()
+
+  /**
+  * Source : SANS 10160-3:2011; section 7.2; page 14
+  *   Checks wheather vailid in range value is used for Basic Wind Speed
+  *   basic wind speed @ 10 meter >> figure 1 page 14
+  **/
+
+  bool WindAction::IsValidBasicWindSpeed(const int _iFundamentalBasicWindSpeed)
+  {
+    bool bExists = std::find(std::begin(BASICWINDSPEED), std::end(BASICWINDSPEED), _iFundamentalBasicWindSpeed) != std::end(BASICWINDSPEED);
+    if (!bExists)
+    {
+      throw std::invalid_argument("received Invaild Basic Wind Speed value");
+    }//if not Valid
+    else
+    {
+      return bExists;
+    }//else Valid
+  }//IsValidBasicWindSpeed()
+
+   /**
+   * Source : SANS 10160-3:2011; section 7.3.2.1; page 16
+   *   Checks wheather vailid in range value is used for Terrain Categorie
+   **/
+  bool WindAction::IsValidTerrainCategory(const char _cTerrainCategory)
+  {
+    bool bExists = std::find(std::begin(TERRAINCATEGORIES), std::end(TERRAINCATEGORIES), _cTerrainCategory) != std::end(TERRAINCATEGORIES);
+    if (!bExists)
+    {
+      throw std::invalid_argument("received Invaild Terrain Category value");
+    }//if not Valid
+    else
+    {
+      return bExists;
+    }//else Valid
+  }//IsValidTerrainCategory()
 
   /**
   * Source : SANS 10160-3:2011; section 7.4; page 20
@@ -90,25 +126,7 @@ namespace WindAction_library
 
     return dReturn;
   }//AirDensity()
-
-  /**
-  * Source : SANS 10160-3:2011; section 7.2; page 14
-  *   Checks wheather vailid in range value is used for Basic Wind Speed
-  *   basic wind speed @ 10 meter >> figure 1 page 14
-  **/
-
-  bool WindAction::IsValidBasicWindSpeed(const int _iFundamentalBasicWindSpeed)
-  {
-    bool bExists = std::find(std::begin(BASICWINDSPEED), std::end(BASICWINDSPEED), _iFundamentalBasicWindSpeed) != std::end(BASICWINDSPEED);
-    if(!bExists)
-    {
-      throw std::invalid_argument("received Invaild Basic Wind Speed value");
-    }//if not Valid
-    else
-    {
-      return bExists;
-    }//else Valid
-  }
+  
 
   /**
   * Source : SANS 10160-3:2011; section 7.3; page 15
@@ -131,14 +149,10 @@ namespace WindAction_library
                                     const double _dTopogaphyactor)
   {
     double dReturn = 0.0;
-
-    if(IsValidBasicWindSpeed(_iFundamentalBasicWindSpeed)
-      && IsValidTerrainCategory(_cTerrainCategory))
-    {
-      double dVbpeak = 1.4 *  BasicWindSpeed(_iFundamentalBasicWindSpeed, _dProbabilityofExceedance);//Vb0 = basic wind speed @ 10 meter >> figure 1 page 14
-      double dCr = TerrainRoughness(_iHeight,_cTerrainCategory);
-      dReturn = dVbpeak * dCr * _dTopogaphyactor;
-    }//if Vaild Input
+ 
+    double dVbpeak = 1.4 *  BasicWindSpeed(_iFundamentalBasicWindSpeed, _dProbabilityofExceedance);
+    double dCr = TerrainRoughness(_iHeight,_cTerrainCategory);
+    dReturn = dVbpeak * dCr * _dTopogaphyactor;    
 
     return dReturn;
   }//PeakWindSpeed()
@@ -166,22 +180,6 @@ namespace WindAction_library
     return dReturn;
   }//BasicWindSpeed()
 
-   /**
-   * Source : SANS 10160-3:2011; section 7.3.2.1; page 16
-   *   Checks wheather vailid in range value is used for Terrain Categorie
-   **/
-  bool WindAction::IsValidTerrainCategory(const char _cTerrainCategory)
-  {
-    bool bExists = std::find(std::begin(TERRAINCATEGORY), std::end(TERRAINCATEGORY), _cTerrainCategory) != std::end(TERRAINCATEGORY);
-    if (!bExists)
-    {
-      throw std::invalid_argument("received Invaild Terrain Category value");
-    }//if not Valid
-    else
-    {
-      return bExists;
-    }//else Valid
-  }
 
   /**
   * Source : SANS 10160-3:2011; section 7.3.2; page 15
@@ -200,7 +198,7 @@ namespace WindAction_library
   double WindAction::TerrainRoughness(const int _iHeight, const char _cTerrainCategory)
   {
 
-    double dRetrun = 0.0;
+    double dReturn = 0.0;
     int iZ0 = 0;
     int iZg = 0;
     int iZc = 0;
@@ -208,25 +206,25 @@ namespace WindAction_library
     
     switch (_cTerrainCategory)
     {
-        case 'A':
+        case TERRAINCATEGORY_A:
           iZ0 = 0;
           iZg = 250;
           iZc = 1;
           dAExponent = 0.070;
           break;
-        case 'B':
+        case TERRAINCATEGORY_B:
           iZ0 = 0;
           iZg = 300;
           iZc = 2;
           dAExponent = 0.095;
           break;
-        case 'C':
+        case TERRAINCATEGORY_C:
           iZ0 = 3;
           iZg = 350;
           iZc = 5;
           dAExponent = 0.120;
           break;
-        case 'D':
+        case TERRAINCATEGORY_D:
           iZ0 = 5;
           iZg = 400;
           iZc = 10;
@@ -234,11 +232,11 @@ namespace WindAction_library
           break;
         default:
           break;
-    }
+    }//switch
 
     double dtemp = static_cast<double>((_iHeight - iZ0)) / static_cast<double>((iZg - iZc));
-    dRetrun = 1.36 * pow(dtemp, dAExponent);
+    dReturn = 1.36 * pow(dtemp, dAExponent);
 
-    return dRetrun;
+    return dReturn;
   }//TerrainRoughness()
 }//namespace WindAction_library

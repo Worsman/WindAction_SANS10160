@@ -1,4 +1,5 @@
-﻿  stdafx.cpp
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppClean.targets(76,5): warning : The process cannot access the file 'c:\development\gitrepos\windaction_sans10160\windaction_unittest1\debug\windaction_unittest1.pch' because it is being used by another process.
+  stdafx.cpp
   WindAction_UnitTest1.cpp
-     Creating library C:\Development\CodeProjects\WindAction_SANS10160\WindAction_Library\Debug\WindAction_UnitTest1.lib and object C:\Development\CodeProjects\WindAction_SANS10160\WindAction_Library\Debug\WindAction_UnitTest1.exp
-  WindAction_UnitTest1.vcxproj -> C:\Development\CodeProjects\WindAction_SANS10160\WindAction_Library\Debug\WindAction_UnitTest1.dll
+     Creating library C:\Development\GITRepos\WindAction_SANS10160\WindAction_Library\Debug\WindAction_UnitTest1.lib and object C:\Development\GITRepos\WindAction_SANS10160\WindAction_Library\Debug\WindAction_UnitTest1.exp
+  WindAction_UnitTest1.vcxproj -> C:\Development\GITRepos\WindAction_SANS10160\WindAction_Library\Debug\WindAction_UnitTest1.dll
